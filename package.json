@@ -1,0 +1,11 @@
+{
+  "name": "ntp",
+  "version": "1.0.0",
+  "description": "Simple NTP Service - Mitch Robb for Bottlenose",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mitch Robb",
+  "license": "ISC"
+}

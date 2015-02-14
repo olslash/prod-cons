@@ -26,7 +26,7 @@ class Producer {
     };
   }
 
-  unregisterConsumer(id) {
+  _unregisterConsumer(id) {
     delete this._registeredConsumers[id];
   }
 
@@ -55,8 +55,8 @@ class Producer {
     // Check if any consumers last sent a keepalive >= 10 seconds ago
     _.each(this._registeredConsumers, function(consumer) {
       if(Date.now() - consumer.lastKeepAlive >= this._timeout) {
-        console.info('culling', consumer.id, 'after', this._timeout, 'seconds of inactivity');
-        delete this._registeredConsumers[consumer.id];
+        console.info('culling', consumer.id, 'after', this._timeout/1000, 'seconds of inactivity');
+        this._unregisterConsumer(consumer.id);
       }
     }, this);
   }

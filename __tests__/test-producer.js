@@ -45,7 +45,7 @@ describe('producer', function () {
     // verify it's ticked twice
     setTimeout(function () {
       calledCount.should.equal(2);
-      this.producer.unregisterConsumer('123');
+      this.producer._unregisterConsumer('123');
     }.bind(this), 2050);
 
     // verify it wasn't called again after being unregistered
@@ -92,7 +92,7 @@ describe('producer', function () {
     // unregister 123
     setTimeout(function () {
       sum.should.equal(8);
-      this.producer.unregisterConsumer('123');
+      this.producer._unregisterConsumer('123');
     }.bind(this), 2050);
 
     // 456 should have been called once more, but not 123

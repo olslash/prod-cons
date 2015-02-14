@@ -5,7 +5,7 @@ var should = require('should'),
 
 describe('consumer', function() {
   beforeEach(function() {
-    this.consumerProcess = cp.fork('consumer.js');
+    this.consumerProcess = cp.fork('consumer.js', [], { env: { 'NODE_ENV': 'test' } });
   });
 
   afterEach(function() {
@@ -27,6 +27,39 @@ describe('consumer', function() {
       type: 'test',
       content: '123'
     });
+  });
+
+  it('should send a keepalive message every second', function(done) {
+    this.timeout(4000);
+    var keepaliveCount = 0;
+
+    this.consumerProcess.on('message', function (message) {
+      if(message.type === 'keepalive') {
+        keepaliveCount++;
+      }
+    });
+
+    setTimeout(function() {
+      keepaliveCount.should.equal(3);
+      done();
+    }, 3200);
+  });
+
+  it('should stop sending messages after 4 seconds when _ttl is 4 ', function(done) {
+    // The consumer's TTL is hardcoded to 4 for tests
+    this.timeout(6100);
+    var keepaliveCount = 0;
+
+    this.consumerProcess.on('message', function (message) {
+      if (message.type === 'keepalive') {
+        keepaliveCount++;
+      }
+    });
+
+    setTimeout(function () {
+      keepaliveCount.should.equal(4);
+      done();
+    }, 5200);
   });
 
 });

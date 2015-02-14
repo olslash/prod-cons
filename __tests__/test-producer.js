@@ -12,6 +12,10 @@ describe('producer', function () {
     this.producer = new Producer();
   });
 
+  afterEach(function() {
+    this.producer.stop();
+  });
+
   it('should send a registered consumer a message every second', function (done) {
     this.timeout(4000);
     var calledCount = 0;
@@ -53,47 +57,47 @@ describe('producer', function () {
 
   it('should call multiple consumers correctly', function(done) {
     this.timeout(4000);
-    var calledCount = 0;
+    var sum = 0;
 
     this.producer.registerConsumer('123', function () {
-      calledCount++;
+      sum++;
     });
 
     this.producer.registerConsumer('456', function () {
-      calledCount = calledCount + 3;
+      sum = sum + 3;
     });
 
     this.producer.init();
 
     setTimeout(function () {
-      calledCount.should.equal(12);
+      sum.should.equal(12);
       done();
     }, 3050)
   });
 
   it('should unregister a consumer, and continue messaging others', function(done) {
     this.timeout(4000);
-    var calledCount = 0;
+    var sum = 0;
 
     this.producer.registerConsumer('123', function () {
-      calledCount++;
+      sum++;
     });
 
     this.producer.registerConsumer('456', function () {
-      calledCount = calledCount + 3;
+      sum = sum + 3;
     });
 
     this.producer.init();
 
     // unregister 123
     setTimeout(function () {
-      calledCount.should.equal(8);
+      sum.should.equal(8);
       this.producer.unregisterConsumer('123');
     }.bind(this), 2050);
 
     // 456 should have been called once more, but not 123
     setTimeout(function () {
-      calledCount.should.equal(11);
+      sum.should.equal(11);
       done();
     }, 3050)
   });
@@ -106,6 +110,23 @@ describe('producer', function () {
     });
 
     this.producer.init();
+  });
+
+  it('should stop sending messages to consumers after the specified inactivity period', function(done) {
+    this.timeout(4000);
+
+    var calledCount = 0;
+    this.producer.registerConsumer('123', function() {
+      calledCount++;
+    });
+
+    this.producer._timeout = 2000;
+    this.producer.init();
+
+    setTimeout(function() {
+      calledCount.should.equal(2);
+      done()
+    }, 3050);
   })
 });
 

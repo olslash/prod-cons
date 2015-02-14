@@ -5,10 +5,15 @@
   "main": "core.js",
   "scripts": {
     "start": "node --harmony --harmony-arrow-functions index.js",
+    "test": "NODE_ENV=test node_modules/.bin/mocha __tests__ --recursive --harmony --harmony-arrow-functions"
   },
   "author": "Mitch Robb",
   "license": "ISC",
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "should": "^5.0.0",
+    "sinon": "^1.12.2"
+  },
   "dependencies": {
     "lodash": "^3.2.0"
   }

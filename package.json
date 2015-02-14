@@ -4,10 +4,13 @@
   "description": "Simple NTP Service - Mitch Robb for Bottlenose",
   "main": "core.js",
   "scripts": {
-    "start": "node --harmony --use-strict index.js",
+    "start": "node --harmony --harmony-arrow-functions --use-strict index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mitch Robb",
   "license": "ISC",
-  "devDependencies": {}
+  "devDependencies": {},
+  "dependencies": {
+    "lodash": "^3.2.0"
+  }
 }

@@ -1,17 +1,7 @@
-var core = require('./core');
+var Core = require('./Core');
 
 var numConsumers = process.env['NUM_CONSUMERS'] || 5;
-var consumerScriptPath = process.env['CONSUMER_SCRIPT'] || 'echo.js';
+var consumerScriptPath = process.env['CONSUMER_SCRIPT'] || 'consumer.js';
 
-core.init(numConsumers, consumerScriptPath);
-//producer.init()
-// core
-
-// instantiate producer
-// producer listens to global emitter for
-// 'register'(consumer id)
-// 'keepalive'(consumer id)
-
-// instantiate n consumers
-// consumers fork the echo server process - consumer ID is process.PID
-// consumers emit 'register'(ID)
+// kick things off by making a core and initializing it with the process args
+var core = new Core().init(numConsumers, consumerScriptPath);

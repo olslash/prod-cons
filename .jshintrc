@@ -2,7 +2,6 @@
   "browser": true,
   "node": true,
   "predef": [
-    "_",
     "Backbone",
     "define",
     "require",

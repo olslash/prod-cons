@@ -1,42 +1,24 @@
-var cp = require('child_process');
+var _ = require('lodash');
 
 class Consumer {
   constructor() {
-    this.process = null;
-    this.pid = null;
+    // The consumer will send [ttl] keepalive mesages to the producer before exiting.
+    this.ttl = _.random(0, 12);
+
+    process.on('message', this._handleMessage.bind(this));
   }
 
-  init(scriptPath) {
-    this.process = cp.fork(scriptPath);
-    this.pid = this.process.pid;
-
-    this.process.on('message', this._handleProcessMessage);
-    this.process.on('error', this._handleProcessError);
-    this.process.on('exit', this._handleProcessExit);
-
-    this._sendMessageToProcess('test')
+  init() {
+    // this consumer is hard-coded to be interested in NTP messages
+    process.send({
+      type: 'register',
+      content: 'ntp'
+    });
   }
 
-  _sendMessageToProcess(message) {
-    this.process.send(message);
-  }
-
-  _handleProcessMessage(message) {
-    process.emit('message', message, this.pid);
-  }
-
-  _handleProcessError(err) {
-    console.error(`killing child process ${this.pid} because of an error: ${err}`);
-  }
-
-  _handleProcessExit() {
-    console.info(`child process ${this.pid} is exiting.`);
+  _handleMessage(message) {
+    console.log(`The consumer at PID ${process.pid} received the message ${message}`)
   }
 }
 
-module.exports = Consumer;
-// fork echo process
-// listen to echo process for messages
-// forward messages to echo process from core on global emitter
-// emit register to the core on global emitter
-//
+var consumer = new Consumer().init();

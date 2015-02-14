@@ -1,12 +1,15 @@
 'use strict';
 
 var should = require('should'),
-    sinon  = require('sinon'),
     cp     = require('child_process');
 
 describe('consumer', function() {
   beforeEach(function() {
     this.consumerProcess = cp.fork('consumer.js');
+  });
+
+  afterEach(function() {
+    this.consumerProcess.kill();
   });
 
   it('should make a registration request for NTP on init', function(done) {
@@ -19,7 +22,7 @@ describe('consumer', function() {
 
   xit('should log to the console messages sent to it', function(done) {
     // fixme: difficult to test for console.log being called, since mocha
-    // also prints to the console.
+    // also prints to the console. Also doesn't seem to stub correctly w/ Sinon.
     this.consumerProcess.send({
       type: 'test',
       content: '123'

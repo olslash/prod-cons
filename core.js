@@ -1,3 +1,5 @@
+'use strict';
+
 var path = require('path'),
     cp = require('child_process'),
     _  = require('lodash');

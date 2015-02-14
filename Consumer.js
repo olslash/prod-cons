@@ -17,7 +17,7 @@ class Consumer {
   }
 
   _handleMessage(message) {
-    console.log(`The consumer at PID ${process.pid} received the message ${message}`)
+    console.log(`The consumer at PID ${process.pid} received the ${message.type} message ${message.content}`)
   }
 }
 

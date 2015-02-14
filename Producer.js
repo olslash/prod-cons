@@ -23,7 +23,10 @@ class Producer {
 
   _tick() {
     _.forEach(this._registeredConsumers, function(consumer) {
-      consumer.callback(this._getTime());
+      consumer.callback({
+        type: 'time',
+        content: this._getTime()
+    });
     }, this);
   }
 

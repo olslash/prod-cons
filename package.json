@@ -1,7 +1,7 @@
 {
   "name": "ntp",
   "version": "1.0.0",
-  "description": "Simple NTP Service - Mitch Robb for Bottlenose",
+  "description": "Simple NTP Service - Mitch Robb",
   "main": "core.js",
   "scripts": {
     "start": "node --harmony --harmony-arrow-functions index.js",
